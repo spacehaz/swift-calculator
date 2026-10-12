@@ -1,5 +1,6 @@
 import SwiftUI
 import Playgrounds
+import CalculatorCore
 
 struct ContentView: View {
     var body: some View {
