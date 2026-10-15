@@ -55,6 +55,14 @@ func pressedDecimalPointWithDigits(
     (keys: [Key.digit(1), Key.operation(.add),  .digit(7), .digit(7), .equals], expected: "78"),
     (keys: [Key.digit(1), Key.operation(.add),  .digit(1), .digit(1), Key.operation(.add), .digit(1)], expected: "1"),
     (keys: [Key.digit(1), Key.operation(.add),  .digit(1), .digit(1), Key.operation(.add)], expected: "12"),
+    (keys: [Key.digit(5), Key.operation(.add),  .decimalPoint], expected: "0."),
+    (keys: [Key.digit(1), Key.operation(.add),  .digit(2), .equals, .digit(5)], expected: "5"),
+    (keys: [Key.digit(1), Key.operation(.add),  Key.operation(.add)], expected: "1"),
+    (keys: [Key.digit(7), .equals,  .operation(.add), Key.digit(1), .equals], expected: "8"),
+    (keys: [.operation(.add), Key.digit(5),  .operation(.add), Key.digit(3), .equals], expected: "8"),
+    (keys: [Key.digit(1),  .decimalPoint, Key.digit(5), .operation(.add), Key.digit(1), .equals], expected: "2.5"),
+    (keys: [Key.digit(1), .operation(.add),  Key.digit(2), .equals, .decimalPoint], expected: "0."),
+    
 ])
 func pressedOperation(
     keys: [Key],
