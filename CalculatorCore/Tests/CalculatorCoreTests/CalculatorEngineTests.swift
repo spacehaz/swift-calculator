@@ -32,7 +32,7 @@ func pressedDigits(
     #expect(engineValue == expected)
 }
 
-@Test("DecimalPoint input", arguments: [
+@Test("Decimal point input", arguments: [
     (keys: [Key.digit(1), .decimalPoint, .digit(7)], expected: "1.7"),
     (keys: [.decimalPoint], expected: "0."),
     (keys: [.decimalPoint, .digit(5)], expected: "0.5"),
@@ -46,3 +46,20 @@ func pressedDecimalPointWithDigits(
     #expect(engineValue == expected)
 }
 
+
+
+@Test("Operation input", arguments: [
+    (keys: [Key.digit(1), Key.operation(.add),  .digit(7)], expected: "7"),
+    (keys: [Key.digit(1), Key.operation(.add)], expected: "1"),
+    (keys: [Key.digit(1), Key.operation(.add),  .digit(7), .digit(7)], expected: "77"),
+    (keys: [Key.digit(1), Key.operation(.add),  .digit(7), .digit(7), .equals], expected: "78"),
+    (keys: [Key.digit(1), Key.operation(.add),  .digit(1), .digit(1), Key.operation(.add), .digit(1)], expected: "1"),
+    (keys: [Key.digit(1), Key.operation(.add),  .digit(1), .digit(1), Key.operation(.add)], expected: "12"),
+])
+func pressedOperation(
+    keys: [Key],
+    expected: String
+) {
+    let engineValue = display(after: keys)
+    #expect(engineValue == expected)
+}
