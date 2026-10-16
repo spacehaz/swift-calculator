@@ -65,35 +65,15 @@ public struct CalculatorEngine: Sendable {
         }
     }
     
-    
-    
-    
-    
-    private func add(_ value1: Decimal, _ value2: Decimal) -> Decimal {
-        return value1 + value2
-    }
-    
-    private func substract(_ value1: Decimal, _ value2: Decimal) -> Decimal {
-        return value1 - value2
-    }
-    
     private mutating func calculate (
         _ currentOperation: Operation,
     ) {
-        switch currentOperation {
-            case .add:
-                if let value1 = storedValue {
-                    let result = add(value1, decimalDisplay)
-                    self.storedValue = result
-                    self.display = "\(result)"
-                }
-            
-            case .subtract:
-                if let value1 = storedValue {
-                    let result = substract(value1, decimalDisplay)
-                    self.storedValue = result
-                    self.display = "\(result)"
-                }
+        guard let value1 = storedValue else { return }
+        let result: Decimal = switch currentOperation {
+            case .add: value1 + decimalDisplay
+            case .subtract: value1 - decimalDisplay
         }
+        self.storedValue = result
+        self.display = "\(result)"
     }
 }

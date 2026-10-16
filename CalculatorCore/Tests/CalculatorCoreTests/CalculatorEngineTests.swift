@@ -46,70 +46,68 @@ func pressedDecimalPointWithDigits(
     #expect(engineValue == expected)
 }
 
+// Typed constants give the compiler a target type: `@Test(arguments:)` is generic,
+// so a big inline literal of tuples has to be inferred bottom-up and times out.
+typealias Case = (keys: [Key], expected: String)
 
-@Test("Add operation input", arguments: [
-    (keys: [Key.digit(1), Key.operation(.add),  .digit(7)], expected: "7"),
-    (keys: [Key.digit(1), Key.operation(.add)], expected: "1"),
-    (keys: [Key.digit(1), Key.operation(.add),  .digit(7), .digit(7)], expected: "77"),
-    (keys: [Key.digit(1), Key.operation(.add),  .digit(7), .digit(7), .equals], expected: "78"),
-    (keys: [Key.digit(1), Key.operation(.add),  .digit(1), .digit(1), Key.operation(.add), .digit(1)], expected: "1"),
-    (keys: [Key.digit(1), Key.operation(.add),  .digit(1), .digit(1), Key.operation(.add)], expected: "12"),
-    (keys: [Key.digit(5), Key.operation(.add),  .decimalPoint], expected: "0."),
-    (keys: [Key.digit(1), Key.operation(.add),  .digit(2), .equals, .digit(5)], expected: "5"),
-    (keys: [Key.digit(1), Key.operation(.add),  Key.operation(.add)], expected: "1"),
-    (keys: [Key.digit(7), .equals,  .operation(.add), Key.digit(1), .equals], expected: "8")
-])
-func pressedAddOperation(
-    keys: [Key],
-    expected: String
-) {
-    let engineValue = display(after: keys)
-    #expect(engineValue == expected)
+let arithmeticCases: [Case] = [
+    (keys: [.digit(1), .operation(.add), .digit(7), .digit(7), .equals], expected: "78"),
+    (keys: [.digit(5), .operation(.subtract), .digit(3), .equals], expected: "2"),
+    (keys: [.digit(3), .operation(.subtract), .digit(5), .equals], expected: "-2"),
+    (keys: [.digit(1), .decimalPoint, .digit(5), .operation(.add), .digit(1), .equals], expected: "2.5"),
+    (keys: [.digit(0), .decimalPoint, .digit(3), .operation(.subtract), .digit(0), .decimalPoint, .digit(1), .equals], expected: "0.2"),
+    (keys: [.operation(.subtract), .digit(5), .equals], expected: "-5"),
+]
+
+@Test("Arithmetic", arguments: arithmeticCases)
+func arithmetic(keys: [Key], expected: String) {
+    #expect(display(after: keys) == expected)
 }
 
+let newNumberAfterOperationCases: [Case] = [
+    (keys: [.digit(1), .operation(.add)], expected: "1"),
+    (keys: [.digit(1), .operation(.add), .digit(7)], expected: "7"),
+    (keys: [.digit(1), .operation(.add), .digit(7), .digit(7)], expected: "77"),
+    (keys: [.digit(5), .operation(.add), .decimalPoint], expected: "0."),
+]
 
-@Test("Additional add operation input", arguments: [
-    (keys: [.operation(.add), Key.digit(5),  .operation(.add), Key.digit(3), .equals], expected: "8"),
-    (keys: [Key.digit(1), .decimalPoint, Key.digit(5), .operation(.add), Key.digit(1), .equals], expected: "2.5"),
-    (keys: [Key.digit(1), .operation(.add), Key.digit(2), .equals, .decimalPoint], expected: "0."),
-    (keys: [Key.digit(7), .equals, .decimalPoint, Key.digit(5)], expected: "0.5"),
-    (keys: [
-        Key.digit(1),
-        .operation(.add),
-        Key.digit(2),
-        .equals,
-        Key.digit(7),
-        .equals,
-        .operation(.add),
-        Key.digit(1),
-        .equals
-    ], expected: "8"),
-    (keys: [
-        Key.digit(7),
-        .equals,
-        Key.digit(5),
-    ], expected: "5"),
-])
-func pressedAdditionalAddOperation(
-    keys: [Key],
-    expected: String
-) {
-    let engineValue = display(after: keys)
-    #expect(engineValue == expected)
+@Test("New number after operation", arguments: newNumberAfterOperationCases)
+func newNumberAfterOperation(keys: [Key], expected: String) {
+    #expect(display(after: keys) == expected)
 }
 
-@Test("Substract operation input", arguments: [
-    (keys: [Key.digit(5),  .operation(.subtract), Key.digit(3), .equals], expected: "2"),
-    (keys: [Key.digit(5),  .operation(.add), Key.digit(2), .operation(.subtract), Key.digit(3), .equals], expected: "4"),
-    (keys: [.operation(.subtract), Key.digit(5), .equals], expected: "-5"),
-    (keys: [Key.digit(3), .operation(.subtract), Key.digit(5), .equals], expected: "-2"),
-    (keys: [Key.digit(5), .operation(.add), .operation(.subtract), Key.digit(3), .equals], expected: "2"),
-    (keys: [Key.digit(0), .decimalPoint, Key.digit(3), .operation(.subtract), Key.digit(0), .decimalPoint, Key.digit(1), .equals], expected: "0.2"),
-])
-func pressedSubstractOperation(
-    keys: [Key],
-    expected: String
-) {
-    let engineValue = display(after: keys)
-    #expect(engineValue == expected)
+let chainingCases: [Case] = [
+    (keys: [.digit(1), .operation(.add), .digit(1), .digit(1), .operation(.add)], expected: "12"),
+    (keys: [.digit(1), .operation(.add), .digit(1), .digit(1), .operation(.add), .digit(1)], expected: "1"),
+    (keys: [.digit(5), .operation(.add), .digit(2), .operation(.subtract), .digit(3), .equals], expected: "4"),
+    (keys: [.operation(.add), .digit(5), .operation(.add), .digit(3), .equals], expected: "8"),
+]
+
+@Test("Chaining", arguments: chainingCases)
+func chaining(keys: [Key], expected: String) {
+    #expect(display(after: keys) == expected)
+}
+
+let equalsCases: [Case] = [
+    (keys: [.digit(1), .operation(.add), .digit(2), .equals, .digit(5)], expected: "5"),
+    (keys: [.digit(1), .operation(.add), .digit(2), .equals, .decimalPoint], expected: "0."),
+    (keys: [.digit(7), .equals, .digit(5)], expected: "5"),
+    (keys: [.digit(7), .equals, .decimalPoint, .digit(5)], expected: "0.5"),
+    (keys: [.digit(7), .equals, .operation(.add), .digit(1), .equals], expected: "8"),
+    (keys: [.digit(1), .operation(.add), .digit(2), .equals, .digit(7), .equals, .operation(.add), .digit(1), .equals], expected: "8"),
+]
+
+@Test("Equals", arguments: equalsCases)
+func equals(keys: [Key], expected: String) {
+    #expect(display(after: keys) == expected)
+}
+
+let operatorChangeCases: [Case] = [
+    (keys: [.digit(5), .operation(.add), .operation(.subtract), .digit(3), .equals], expected: "2"),
+    (keys: [.digit(1), .operation(.add), .operation(.add)], expected: "1"),
+]
+
+@Test("Operator change", arguments: operatorChangeCases)
+func operatorChange(keys: [Key], expected: String) {
+    #expect(display(after: keys) == expected)
 }
