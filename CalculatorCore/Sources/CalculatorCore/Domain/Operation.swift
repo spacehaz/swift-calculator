@@ -8,4 +8,6 @@
 public enum Operation: Sendable {
     case add
     case subtract
+    case multiply
+    case divide
 }

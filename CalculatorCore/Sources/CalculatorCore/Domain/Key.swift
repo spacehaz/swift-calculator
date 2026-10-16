@@ -1,5 +1,5 @@
 public enum Key: Sendable {
-    case digit(Int)
+    case digit(Digit)
     case decimalPoint
     case operation(Operation)
     case equals

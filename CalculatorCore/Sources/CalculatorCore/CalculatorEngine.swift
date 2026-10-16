@@ -25,9 +25,9 @@ public struct CalculatorEngine: Sendable {
             case .digit(let value):
                 if display == "0" || startsNewNumber {
                     self.startsNewNumber = false
-                    self.display = String(value)
+                    self.display = String(value.rawValue)
                 } else {
-                    self.display += String(value)
+                    self.display += String(value.rawValue)
                 }
             case .decimalPoint:
                 if self.startsNewNumber {
@@ -72,6 +72,8 @@ public struct CalculatorEngine: Sendable {
         let result: Decimal = switch currentOperation {
             case .add: value1 + decimalDisplay
             case .subtract: value1 - decimalDisplay
+            case .divide: value1 / decimalDisplay
+            case .multiply: value1 * decimalDisplay
         }
         self.storedValue = result
         self.display = "\(result)"
