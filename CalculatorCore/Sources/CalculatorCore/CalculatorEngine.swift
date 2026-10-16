@@ -1,19 +1,23 @@
 import Foundation
 
 public struct CalculatorEngine: Sendable {
-    
+
 //    what user cuurrently can see on the display
     public private(set) var display: String = "0"
-    
+
 // what is already counted
     private var storedValue: Decimal? = nil
-    
+
 // is the calculator ready for the next value input?
     private var startsNewNumber: Bool = true
-    
+
+    private var decimalDisplay: Decimal {
+        Decimal(string: self.display)!
+    }
+
 // what is the current operation to do
     private var operation: Operation?
-    
+
     public init () {}
 
     public mutating func press(_ key: Key) {
@@ -25,7 +29,6 @@ public struct CalculatorEngine: Sendable {
                 } else {
                     self.display += String(value)
                 }
-                
             case .decimalPoint:
                 if self.startsNewNumber {
                     self.display = "0."
@@ -38,7 +41,7 @@ public struct CalculatorEngine: Sendable {
                 if startsNewNumber {
                     self.operation = value
                     if self.storedValue == nil {
-                        self.storedValue = Decimal(string: self.display)!
+                        self.storedValue = decimalDisplay
                     }
                     
                     return
@@ -47,8 +50,9 @@ public struct CalculatorEngine: Sendable {
                 if let operation {
                     calculate(operation)
                 } else {
-                    self.storedValue = Decimal(string: self.display)!
+                    self.storedValue = decimalDisplay
                 }
+
                 self.operation = value
                 self.startsNewNumber = true
             case .equals:
@@ -57,8 +61,11 @@ public struct CalculatorEngine: Sendable {
                 }
                 self.operation = nil
                 startsNewNumber = true
+                self.storedValue = nil
         }
     }
+    
+    
     
     
     
@@ -66,16 +73,27 @@ public struct CalculatorEngine: Sendable {
         return value1 + value2
     }
     
+    private func substract(_ value1: Decimal, _ value2: Decimal) -> Decimal {
+        return value1 - value2
+    }
+    
     private mutating func calculate (
         _ currentOperation: Operation,
     ) {
         switch currentOperation {
             case .add:
-            if let value1 = storedValue, let value2 = Decimal(string: display) {
-                    let result = add(value1, value2)
-                self.storedValue = result
-                self.display = "\(result)"
-            }
+                if let value1 = storedValue {
+                    let result = add(value1, decimalDisplay)
+                    self.storedValue = result
+                    self.display = "\(result)"
+                }
+            
+            case .subtract:
+                if let value1 = storedValue {
+                    let result = substract(value1, decimalDisplay)
+                    self.storedValue = result
+                    self.display = "\(result)"
+                }
         }
     }
 }

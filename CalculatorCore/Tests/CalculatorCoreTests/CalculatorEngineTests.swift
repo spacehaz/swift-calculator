@@ -47,8 +47,7 @@ func pressedDecimalPointWithDigits(
 }
 
 
-
-@Test("Operation input", arguments: [
+@Test("Add operation input", arguments: [
     (keys: [Key.digit(1), Key.operation(.add),  .digit(7)], expected: "7"),
     (keys: [Key.digit(1), Key.operation(.add)], expected: "1"),
     (keys: [Key.digit(1), Key.operation(.add),  .digit(7), .digit(7)], expected: "77"),
@@ -58,13 +57,56 @@ func pressedDecimalPointWithDigits(
     (keys: [Key.digit(5), Key.operation(.add),  .decimalPoint], expected: "0."),
     (keys: [Key.digit(1), Key.operation(.add),  .digit(2), .equals, .digit(5)], expected: "5"),
     (keys: [Key.digit(1), Key.operation(.add),  Key.operation(.add)], expected: "1"),
-    (keys: [Key.digit(7), .equals,  .operation(.add), Key.digit(1), .equals], expected: "8"),
-    (keys: [.operation(.add), Key.digit(5),  .operation(.add), Key.digit(3), .equals], expected: "8"),
-    (keys: [Key.digit(1),  .decimalPoint, Key.digit(5), .operation(.add), Key.digit(1), .equals], expected: "2.5"),
-    (keys: [Key.digit(1), .operation(.add),  Key.digit(2), .equals, .decimalPoint], expected: "0."),
-    
+    (keys: [Key.digit(7), .equals,  .operation(.add), Key.digit(1), .equals], expected: "8")
 ])
-func pressedOperation(
+func pressedAddOperation(
+    keys: [Key],
+    expected: String
+) {
+    let engineValue = display(after: keys)
+    #expect(engineValue == expected)
+}
+
+
+@Test("Additional add operation input", arguments: [
+    (keys: [.operation(.add), Key.digit(5),  .operation(.add), Key.digit(3), .equals], expected: "8"),
+    (keys: [Key.digit(1), .decimalPoint, Key.digit(5), .operation(.add), Key.digit(1), .equals], expected: "2.5"),
+    (keys: [Key.digit(1), .operation(.add), Key.digit(2), .equals, .decimalPoint], expected: "0."),
+    (keys: [Key.digit(7), .equals, .decimalPoint, Key.digit(5)], expected: "0.5"),
+    (keys: [
+        Key.digit(1),
+        .operation(.add),
+        Key.digit(2),
+        .equals,
+        Key.digit(7),
+        .equals,
+        .operation(.add),
+        Key.digit(1),
+        .equals
+    ], expected: "8"),
+    (keys: [
+        Key.digit(7),
+        .equals,
+        Key.digit(5),
+    ], expected: "5"),
+])
+func pressedAdditionalAddOperation(
+    keys: [Key],
+    expected: String
+) {
+    let engineValue = display(after: keys)
+    #expect(engineValue == expected)
+}
+
+@Test("Substract operation input", arguments: [
+    (keys: [Key.digit(5),  .operation(.subtract), Key.digit(3), .equals], expected: "2"),
+    (keys: [Key.digit(5),  .operation(.add), Key.digit(2), .operation(.subtract), Key.digit(3), .equals], expected: "4"),
+    (keys: [.operation(.subtract), Key.digit(5), .equals], expected: "-5"),
+    (keys: [Key.digit(3), .operation(.subtract), Key.digit(5), .equals], expected: "-2"),
+    (keys: [Key.digit(5), .operation(.add), .operation(.subtract), Key.digit(3), .equals], expected: "2"),
+    (keys: [Key.digit(0), .decimalPoint, Key.digit(3), .operation(.subtract), Key.digit(0), .decimalPoint, Key.digit(1), .equals], expected: "0.2"),
+])
+func pressedSubstractOperation(
     keys: [Key],
     expected: String
 ) {
