@@ -12,6 +12,16 @@ func display(after keys: [Key]) -> String {
     return engine.display
 }
 
+func showError(after keys: [Key]) -> CalculationError? {
+    var engine = CalculatorEngine()
+    
+    for key in keys {
+        engine.press(key)
+    }
+    
+    return engine.error
+}
+
 @Test("New calculator shows 0") func newCalculatorShowsZero() {
     let engine = CalculatorEngine()
     let initialValue = engine.display
@@ -80,6 +90,18 @@ let arithmeticCases: [Case] = [
         .equals
     ], expected: "78"),
     (keys: [
+        .digit(Digit.seven),
+        .operation(.divide),
+        .digit(Digit.two),
+        .equals
+    ], expected: "3.5"),
+    (keys: [
+        .digit(Digit.zero),
+        .operation(.divide),
+        .digit(Digit.five),
+        .equals
+    ], expected: "0"),
+    (keys: [
         .digit(Digit.five),
         .operation(.subtract),
         .digit(Digit.three),
@@ -120,13 +142,6 @@ let arithmeticCases: [Case] = [
         .digit(Digit.five),
         .equals
     ], expected: "15"),
-    (keys: [
-        .digit(Digit.three),
-        .operation(.multiply),
-        .operation(.subtract),
-        .digit(Digit.five),
-        .equals
-    ], expected: "-2"),
     (keys: [
         .digit(Digit.one),
         .digit(Digit.five),
@@ -211,7 +226,8 @@ let equalsCases: [Case] = [
     (keys: [
         .digit(Digit.one),
         .operation(.add),
-        .digit(Digit.two), .equals,
+        .digit(Digit.two),
+        .equals,
         .digit(Digit.five)
     ], expected: "5"),
     (keys: [
@@ -221,6 +237,14 @@ let equalsCases: [Case] = [
         .equals,
         .decimalPoint
     ], expected: "0."),
+    (keys: [
+        .digit(Digit.two),
+        .operation(.add),
+        .digit(Digit.three),
+        .operation(.multiply),
+        .digit(Digit.four),
+        .equals,
+    ], expected: "20"),
     (keys: [
         .digit(Digit.seven),
         .equals,
@@ -270,9 +294,32 @@ let operatorChangeCases: [Case] = [
         .operation(.add),
         .operation(.add)
     ], expected: "1"),
+    (keys: [
+        .digit(Digit.three),
+        .operation(.multiply),
+        .operation(.subtract),
+        .digit(Digit.five),
+        .equals
+    ], expected: "-2"),
 ]
 
 @Test("Operator change", arguments: operatorChangeCases)
 func operatorChange(keys: [Key], expected: String) {
     #expect(display(after: keys) == expected)
 }
+
+typealias ErrorCase = (keys: [Key], expected: CalculationError)
+let errorHandlingCases: [ErrorCase] = [
+    (keys: [
+        .digit(Digit.five),
+        .operation(.divide),
+        .digit(Digit.zero),
+        .equals
+    ], expected: CalculationError.cannotDivideByZero),
+]
+
+@Test("Error handling", arguments: errorHandlingCases)
+func errorHandling(keys: [Key], expected: CalculationError) {
+    #expect(showError(after: keys) == expected)
+}
+

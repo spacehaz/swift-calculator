@@ -14,13 +14,24 @@ public struct CalculatorEngine: Sendable {
     private var decimalDisplay: Decimal {
         Decimal(string: self.display)!
     }
+    
+    public private(set) var error: CalculationError?
 
 // what is the current operation to do
     private var operation: Operation?
 
     public init () {}
+    
+    private mutating func setError(_ error: CalculationError) {
+        self.display = "0"
+        self.storedValue = nil
+        self.startsNewNumber = true
+        self.error = error
+        self.operation = nil
+    }
 
     public mutating func press(_ key: Key) {
+        self.error = nil
         switch key {
             case .digit(let value):
                 if display == "0" || startsNewNumber {
@@ -69,13 +80,28 @@ public struct CalculatorEngine: Sendable {
         _ currentOperation: Operation,
     ) {
         guard let value1 = storedValue else { return }
-        let result: Decimal = switch currentOperation {
-            case .add: value1 + decimalDisplay
-            case .subtract: value1 - decimalDisplay
-            case .divide: value1 / decimalDisplay
-            case .multiply: value1 * decimalDisplay
+        let result: Result<Decimal, CalculationError> = switch currentOperation {
+            case .add: .success(value1 + decimalDisplay)
+            case .subtract: .success(value1 - decimalDisplay)
+            case .divide:
+                if decimalDisplay == 0.0 {
+                    .failure(CalculationError.cannotDivideByZero)
+                } else {
+                    .success(value1 / decimalDisplay)
+                }
+                
+            case .multiply: .success(value1 * decimalDisplay)
         }
-        self.storedValue = result
-        self.display = "\(result)"
+        
+        switch result {
+            case .success(let successResult):
+                self.storedValue = successResult
+                self.display = "\(successResult)"
+                
+            case .failure(let error):
+                setError(error)
+        }
+            
+
     }
 }
