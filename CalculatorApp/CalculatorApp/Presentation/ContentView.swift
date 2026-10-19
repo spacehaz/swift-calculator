@@ -3,16 +3,13 @@ import Playgrounds
 import CalculatorCore
 
 struct ContentView: View {
+    @State private var viewModel = CalculatorViewModel()
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        DisplayText(text: viewModel.displayText)
     }
 }
 
 #Preview {
     ContentView()
-}
-
-#Playground {
-    _ = 1 + 2
 }
