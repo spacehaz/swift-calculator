@@ -22,12 +22,17 @@ public struct CalculatorEngine: Sendable {
 
     public init () {}
     
-    private mutating func setError(_ error: CalculationError) {
+    private mutating func resetCalculation() {
         self.display = "0"
         self.storedValue = nil
         self.startsNewNumber = true
-        self.error = error
         self.operation = nil
+        self.error = nil
+    }
+    
+    private mutating func setError(_ error: CalculationError) {
+        resetCalculation()
+        self.error = error
     }
 
     public mutating func press(_ key: Key) {
@@ -73,6 +78,10 @@ public struct CalculatorEngine: Sendable {
                 self.operation = nil
                 startsNewNumber = true
                 self.storedValue = nil
+            
+            case .allClear:
+                resetCalculation()
+              
         }
     }
     

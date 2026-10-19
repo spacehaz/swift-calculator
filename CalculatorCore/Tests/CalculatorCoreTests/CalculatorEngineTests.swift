@@ -90,6 +90,12 @@ let arithmeticCases: [Case] = [
         .equals
     ], expected: "78"),
     (keys: [
+        .digit(Digit.five),
+        .operation(.divide),
+        .digit(Digit.zero),
+        .equals
+    ], expected: "0"),
+    (keys: [
         .digit(Digit.seven),
         .operation(.divide),
         .digit(Digit.two),
@@ -274,6 +280,9 @@ let equalsCases: [Case] = [
         .digit(Digit.one),
         .equals
     ], expected: "8"),
+    
+    
+    
 ]
 
 @Test("Equals", arguments: equalsCases)
@@ -308,7 +317,7 @@ func operatorChange(keys: [Key], expected: String) {
     #expect(display(after: keys) == expected)
 }
 
-typealias ErrorCase = (keys: [Key], expected: CalculationError)
+typealias ErrorCase = (keys: [Key], expected: CalculationError?)
 let errorHandlingCases: [ErrorCase] = [
     (keys: [
         .digit(Digit.five),
@@ -316,10 +325,75 @@ let errorHandlingCases: [ErrorCase] = [
         .digit(Digit.zero),
         .equals
     ], expected: CalculationError.cannotDivideByZero),
+    
+    (keys: [
+        .digit(Digit.five),
+        .operation(.divide),
+        .digit(Digit.zero),
+        .equals,
+        .digit(Digit.seven),
+    ], expected: nil),
+    
+    (keys: [
+        .digit(Digit.five),
+        .operation(.divide),
+        .digit(Digit.zero),
+        .equals,
+        .decimalPoint,
+    ], expected: nil),
+    
+    (keys: [
+        .digit(Digit.five),
+        .operation(.divide),
+        .digit(Digit.zero),
+        .operation(.add),
+        .digit(Digit.one),
+        .equals
+    ], expected: nil),
+    
+    (keys: [
+        .digit(Digit.five),
+        .operation(.divide),
+        .digit(Digit.zero),
+        .equals,
+        .allClear
+    ], expected: nil),
 ]
 
 @Test("Error handling", arguments: errorHandlingCases)
-func errorHandling(keys: [Key], expected: CalculationError) {
+func errorHandling(keys: [Key], expected: CalculationError?) {
     #expect(showError(after: keys) == expected)
 }
 
+
+
+
+let acCases: [Case] = [
+    (keys: [
+        .digit(Digit.one),
+        .digit(Digit.two),
+        .allClear
+    ], expected: "0"),
+    
+    (keys: [
+        .digit(Digit.one),
+        .digit(Digit.two),
+        .allClear,
+        .digit(Digit.three),
+    ], expected: "3"),
+    
+    
+    (keys: [
+        .digit(Digit.five),
+        .operation(.add),
+        .digit(Digit.three),
+        .allClear,
+        .digit(Digit.three),
+        .equals
+    ], expected: "3"),
+]
+
+@Test("AC handling", arguments: acCases)
+func acHandling(keys: [Key], expected: String) {
+    #expect(display(after: keys) == expected)
+}

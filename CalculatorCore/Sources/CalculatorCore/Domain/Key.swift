@@ -3,4 +3,5 @@ public enum Key: Sendable {
     case decimalPoint
     case operation(Operation)
     case equals
+    case allClear
 }
