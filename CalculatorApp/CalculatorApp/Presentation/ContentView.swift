@@ -6,7 +6,7 @@ struct ContentView: View {
     @State private var viewModel = CalculatorViewModel()
     
     var body: some View {
-        DisplayText(text: viewModel.displayText)
+        CalculatorDisplay(text: viewModel.displayText)
     }
 }
 
