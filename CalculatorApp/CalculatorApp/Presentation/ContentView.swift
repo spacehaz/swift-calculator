@@ -33,21 +33,30 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            Spacer()
+
             CalculatorDisplay(text: viewModel.displayText)
             Grid {
                 ForEach(buttons.indices, id: \.self) { index in
                     
                     GridRow {
                         ForEach(buttons[index], id: \.self) { key in
-                            CalculatorButton(title: key.buttonLabel, style: key.buttonStyle) {
+                            CalculatorButton(
+                                title: key.buttonLabel,
+                                style: key.buttonStyle,
+                                isSquare: key.columnsCount == 1
+                            ) {
                                 withAnimation { viewModel.press(key) }
                             }
+                            .gridCellColumns(key.columnsCount)
+
                         }
                     }
                 }
             }
+            .padding()
+            .fixedSize(horizontal: false, vertical: true) 
             
-            Spacer()
             
         }
         .frame(maxHeight: .infinity)

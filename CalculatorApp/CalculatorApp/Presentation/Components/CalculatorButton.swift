@@ -32,19 +32,29 @@ enum CalculatorButtonStyle {
 struct CalculatorButton: View {
     let title: String
     let style: CalculatorButtonStyle
+    var isSquare: Bool = true
     let action: () -> Void
+    
+    var buttonShape: some View {
+        Text(title)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .font(.headline)
+            .foregroundStyle(style.foreground)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(style.background)
+            )
+    }
+    
     
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .aspectRatio(1, contentMode: .fit)
-                .font(.headline)
-                .foregroundStyle(style.foreground)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(style.background)
-                )
+            if (isSquare) {
+                buttonShape
+                    .aspectRatio(1, contentMode: .fit)
+            } else {
+                buttonShape
+            }
         }
     }
 }
