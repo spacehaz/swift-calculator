@@ -5,3 +5,5 @@ public enum Key: Sendable {
     case equals
     case allClear
 }
+
+extension Key: Hashable {}

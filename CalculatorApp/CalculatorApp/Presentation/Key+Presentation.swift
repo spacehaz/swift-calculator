@@ -23,9 +23,9 @@ extension Key {
             case .operation(let operation):
                 switch (operation) {
                     case .add: "+"
-                    case .divide: "/"
-                    case .subtract: "-"
-                    case .multiply: "*"
+                    case .divide: "÷"
+                    case .subtract: "−"
+                    case .multiply: "×"
                 }
             case .decimalPoint: "."
             case .equals: "="

@@ -21,7 +21,8 @@ enum CalculatorButtonStyle {
     var foreground: Color {
         switch self {
             case .function: .black
-            default: .white
+            case .operation: .white
+            case .digit: .white
         }
     }
 }
@@ -36,7 +37,8 @@ struct CalculatorButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .frame(width: 60, height: 60)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .aspectRatio(1, contentMode: .fit)
                 .font(.headline)
                 .foregroundStyle(style.foreground)
                 .background(
