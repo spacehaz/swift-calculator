@@ -1,9 +1,16 @@
 import SwiftUI
 
-@main struct MyApp: App {    
+@main struct MyApp: App {
+    private var viewModel: CalculatorViewModel
+    
+    init () {
+        let historyRepository = InMemoryHistoryRepository()
+        viewModel = CalculatorViewModel(history: historyRepository)
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(viewModel: viewModel)
         }
     }
 }

@@ -2,7 +2,11 @@ import SwiftUI
 import CalculatorCore
 
 struct ContentView: View {
-    @State private var viewModel = CalculatorViewModel()
+    private let viewModel: CalculatorViewModel
+    
+    init (viewModel: CalculatorViewModel) {
+        self.viewModel = viewModel
+    }
     
     let buttons: [[Key]] = [
         [.allClear, .operation(.divide)],
@@ -62,8 +66,4 @@ struct ContentView: View {
         .frame(maxHeight: .infinity)
         .background(.black)
     }
-}
-
-#Preview {
-    ContentView()
 }

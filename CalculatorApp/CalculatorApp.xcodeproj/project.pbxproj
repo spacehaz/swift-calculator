@@ -10,14 +10,30 @@
 		E56F6D2E307D2431009018C3 /* CalculatorCore in Frameworks */ = {isa = PBXBuildFile; productRef = E56F6D2D307D2431009018C3 /* CalculatorCore */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E56C856C3088E4D20068B903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 000000000000000100000000;
+			remoteInfo = CalculatorApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* CalculatorApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalculatorApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E56C85683088E4D20068B903 /* CalculatorAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		000000000000000000000010 /* CalculatorApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = CalculatorApp;
+			sourceTree = "<group>";
+		};
+		E56C85693088E4D20068B903 /* CalculatorAppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CalculatorAppTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -29,6 +45,11 @@
 				E56F6D2E307D2431009018C3 /* CalculatorCore in Frameworks */,
 			);
 		};
+		E56C85653088E4D20068B903 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -36,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000010 /* CalculatorApp */,
+				E56C85693088E4D20068B903 /* CalculatorAppTests */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -44,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000120 /* CalculatorApp.app */,
+				E56C85683088E4D20068B903 /* CalculatorAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,6 +95,27 @@
 			productReference = 000000000000000000000120 /* CalculatorApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E56C85673088E4D20068B903 /* CalculatorAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E56C856E3088E4D20068B903 /* Build configuration list for PBXNativeTarget "CalculatorAppTests" */;
+			buildPhases = (
+				E56C85643088E4D20068B903 /* Sources */,
+				E56C85653088E4D20068B903 /* Frameworks */,
+				E56C85663088E4D20068B903 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E56C856D3088E4D20068B903 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E56C85693088E4D20068B903 /* CalculatorAppTests */,
+			);
+			name = CalculatorAppTests;
+			productName = CalculatorAppTests;
+			productReference = E56C85683088E4D20068B903 /* CalculatorAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -79,11 +123,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2630;
+				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					000000000000000100000000 = {
 						CreatedOnToolsVersion = 26.3;
+					};
+					E56C85673088E4D20068B903 = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = 000000000000000100000000;
 					};
 				};
 			};
@@ -105,12 +153,18 @@
 			projectRoot = "";
 			targets = (
 				000000000000000100000000 /* CalculatorApp */,
+				E56C85673088E4D20068B903 /* CalculatorAppTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		000000000000000140000000 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		E56C85663088E4D20068B903 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
 			);
@@ -123,7 +177,20 @@
 			files = (
 			);
 		};
+		E56C85643088E4D20068B903 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E56C856D3088E4D20068B903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 000000000000000100000000 /* CalculatorApp */;
+			targetProxy = E56C856C3088E4D20068B903 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		000000000000000011000000 /* Debug configuration for PBXProject "CalculatorApp" */ = {
@@ -336,6 +403,51 @@
 			};
 			name = Release;
 		};
+		E56C856F3088E4D20068B903 /* Debug configuration for PBXNativeTarget "CalculatorAppTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JZMZ7BQ8S9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = spacehaz.CalculatorAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalculatorApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CalculatorApp";
+			};
+			name = Debug;
+		};
+		E56C85703088E4D20068B903 /* Release configuration for PBXNativeTarget "CalculatorAppTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JZMZ7BQ8S9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = spacehaz.CalculatorAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalculatorApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CalculatorApp";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -352,6 +464,14 @@
 			buildConfigurations = (
 				000000000000000111000000 /* Debug configuration for PBXNativeTarget "CalculatorApp" */,
 				000000000000000112000000 /* Release configuration for PBXNativeTarget "CalculatorApp" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E56C856E3088E4D20068B903 /* Build configuration list for PBXNativeTarget "CalculatorAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E56C856F3088E4D20068B903 /* Debug configuration for PBXNativeTarget "CalculatorAppTests" */,
+				E56C85703088E4D20068B903 /* Release configuration for PBXNativeTarget "CalculatorAppTests" */,
 			);
 			defaultConfigurationName = Release;
 		};
