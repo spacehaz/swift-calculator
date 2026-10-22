@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main struct MyApp: App {
-    private var viewModel: CalculatorViewModel
+    @State private var viewModel: CalculatorViewModel
     
     init () {
         let historyRepository = InMemoryHistoryRepository()

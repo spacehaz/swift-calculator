@@ -6,13 +6,152 @@
 //
 
 import Testing
+@testable import CalculatorApp
+import CalculatorCore
 
-struct CalculatorAppTests {
-
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-        // Swift Testing Documentation
-        // https://developer.apple.com/documentation/testing
+@MainActor struct CalculatorAppTests {
+    
+    static let resultTestValues: [(keys: [Key], expected: String?)] = [
+        (keys: [
+            .digit(.one),
+            .digit(.two),
+            .operation(.add),
+            .digit(.three),
+            .equals
+        ], expected: "15"),
+        (keys: [
+            .digit(.one),
+            .digit(.two),
+            .operation(.add),
+            .digit(.three),
+            .equals,
+            .equals
+        ], expected: "15"),
+        (keys: [
+            .digit(.one),
+            .operation(.add),
+            .operation(.subtract),
+            .digit(.one),
+            .equals,
+        ], expected: "0"),
+        
+        (keys: [
+            .digit(.one),
+            .operation(.add),
+            .digit(.three),
+            .operation(.multiply),
+            .digit(.two),
+            .equals,
+        ], expected: "8"),
+        
+        (keys: [
+            .digit(.five),
+            .operation(.divide),
+            .digit(.zero),
+            .equals,
+        ], expected: nil),
+        
+        (keys: [
+            .digit(.five),
+            .operation(.divide),
+            .digit(.zero),
+            .operation(.add),
+            .digit(.one),
+            .equals,
+        ], expected: nil),
+        
+        (keys: [
+            .digit(.seven),
+            .equals,
+        ], expected: nil)
+    ]
+    
+    @Test("Result values", arguments: resultTestValues)
+    
+    func resultValuesTest(keys: [Key], expected: String?) async throws {
+        let repository = InMemoryHistoryRepository()
+        let viewModel = CalculatorViewModel(history: repository)
+        
+        for item in keys {
+            viewModel.press(item)
+        }
+        let historyFirst = viewModel.historyEntries.first
+        #expect(historyFirst?.result == expected)
     }
-
+    
+    
+    
+    
+    
+    
+    
+    
+    static let expressionTestValues: [(keys: [Key], expected: [String])] = [
+        (keys: [
+            .digit(.one),
+            .digit(.two),
+            .operation(.add),
+            .digit(.three),
+            .equals
+        ], expected: ["12 + 3 = 15"]),
+        (keys: [
+            .digit(.one),
+            .digit(.two),
+            .operation(.add),
+            .digit(.three),
+            .equals,
+            .equals
+        ], expected: ["12 + 3 = 15"]),
+        (keys: [
+            .digit(.one),
+            .operation(.add),
+            .operation(.subtract),
+            .digit(.one),
+            .equals,
+        ], expected: ["1 − 1 = 0"]),
+        
+        (keys: [
+            .digit(.one),
+            .operation(.add),
+            .digit(.three),
+            .operation(.multiply),
+            .digit(.two),
+            .equals,
+        ], expected: ["1 + 3 × 2 = 8"]),
+        
+        (keys: [
+            .digit(.five),
+            .operation(.divide),
+            .digit(.zero),
+            .equals,
+        ], expected: []),
+        
+        (keys: [
+            .digit(.five),
+            .operation(.divide),
+            .digit(.zero),
+            .operation(.add),
+            .digit(.one),
+            .equals,
+        ], expected: []),
+        
+        (keys: [
+            .digit(.seven),
+            .equals,
+        ], expected: [])
+        
+    ]
+    
+    @Test("Expression test values", arguments: expressionTestValues)
+    
+    func expressionValuesTest(keys: [Key], expected: [String]) async throws {
+        let repository = InMemoryHistoryRepository()
+        let viewModel = CalculatorViewModel(history: repository)
+        
+        for item in keys {
+            viewModel.press(item)
+        }
+        let historyExpressions = viewModel.historyEntries.map({ "\($0.expression) = \($0.result)"})
+        #expect(historyExpressions == expected)
+    }
 }
