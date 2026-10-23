@@ -5,6 +5,7 @@
 //  Created by Hazo Baykulov on 19.10.2026.
 //
 import SwiftUI
+import UIKit
 
 enum CalculatorButtonStyle {
     case digit
@@ -23,6 +24,14 @@ enum CalculatorButtonStyle {
             case .function: .black
             case .operation: .white
             case .digit: .white
+        }
+    }
+    
+    var hapticStyle: UIImpactFeedbackGenerator.FeedbackStyle {
+        switch self {
+            case .function: .heavy
+            case .operation: .medium
+            case .digit: .light
         }
     }
 }
@@ -48,7 +57,10 @@ struct CalculatorButton: View {
     
     
     var body: some View {
-        Button(action: action) {
+        Button {
+            UIImpactFeedbackGenerator(style: style.hapticStyle).impactOccurred()
+            action()
+        } label: {
             if (isSquare) {
                 buttonShape
                     .aspectRatio(1, contentMode: .fit)

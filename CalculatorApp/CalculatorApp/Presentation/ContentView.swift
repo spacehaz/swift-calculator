@@ -72,7 +72,7 @@ struct ContentView: View {
             .fixedSize(horizontal: false, vertical: true) 
             .sheet(isPresented: $isHistoryPresented) {
                 HistoryPage(entries: viewModel.historyEntries, onClear: {
-                    viewModel.clearAll()
+                    viewModel.clearHistory()
                 })
             }
             

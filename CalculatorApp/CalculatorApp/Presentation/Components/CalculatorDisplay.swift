@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import UIKit
+
 
 struct CalculatorDisplay: View {
     let text: String
@@ -25,6 +27,12 @@ struct CalculatorDisplay: View {
             .contentTransition(.numericText())
             .textSelection(.enabled)
             .accessibilityLabel("Result")
+            .contextMenu {
+                Button("Copy", systemImage: "doc.on.doc") {
+                    UIPasteboard.general.string = text
+                }
+                .disabled(text == "Error")
+            }
             
     }
 }
