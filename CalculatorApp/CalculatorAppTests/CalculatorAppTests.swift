@@ -65,10 +65,8 @@ import CalculatorCore
         ], expected: [])
         
     ]
-    
-    @Test("Expression test values", arguments: expressionTestValues)
-    
-    func expressionValuesTest(keys: [Key], expected: [String]) async throws {
+    @Test("Testing historyEntries", arguments: expressionTestValues)
+    func expressionValuesTest(keys: [Key], expected: [String]) {
         let repository = InMemoryHistoryRepository()
         let viewModel = CalculatorViewModel(history: repository)
         
@@ -77,5 +75,38 @@ import CalculatorCore
         }
         let historyExpressions = viewModel.historyEntries.map({ "\($0.expression) = \($0.result)"})
         #expect(historyExpressions == expected)
+    }
+    
+    
+    typealias Step = (key: Key, beforePress: String, afterPress: String, hasError: Bool)
+    static let historyRecorderCases: [(operationValues: [Step], expected: String)] = [
+        (
+            operationValues: [
+                (key: .digit(.three),  beforePress: "", afterPress: "3", hasError: false),
+                (key: .operation(.add),  beforePress: "3", afterPress: "3", hasError: false),
+                (key: .equals, beforePress: "3", afterPress: "6", hasError: false)
+            ],
+            expected: "3 + 3"
+        )
+    ]
+    @Test("Testing HistoryRecorder", arguments: historyRecorderCases)
+    func historyRecorderTest(
+        operationValues: [Step],
+        expected: String
+    ) {
+        var historyRecorder = HistoryRecorder()
+        
+        var record: HistoryEntry?
+        for values in operationValues {
+            record = historyRecorder.createRecord(
+                values.key,
+                beforePress: values.beforePress,
+                afterPress: values.afterPress,
+                hasError: values.hasError
+            )
+        }
+        
+        #expect(record?.expression == expected)
+
     }
 }

@@ -10,9 +10,9 @@ import SwiftUI
 struct HistoryPage: View {
     let entries: [HistoryEntry]
     let onClear: () -> Void
-    @State var isDeleting: Bool = false
+    @State private var isDeleting: Bool = false
     
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack {
@@ -27,16 +27,16 @@ struct HistoryPage: View {
                     }
                 }
             }
-            .navigationTitle("History page")
+            .navigationTitle("History")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Clear", role: .destructive) {
                         self.isDeleting = true
-//
                     }
-                    .confirmationDialog("Are you sure?", isPresented: $isDeleting) {
-                        Button("Ok") {
+                    .disabled(entries.isEmpty)
+                    .confirmationDialog("History clear action", isPresented: $isDeleting) {
+                        Button("Clear History", role: .destructive) {
                             onClear()
                             dismiss()
                         }

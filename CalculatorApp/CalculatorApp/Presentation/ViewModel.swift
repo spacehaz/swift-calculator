@@ -25,7 +25,7 @@ import Observation
             return calculatorEngine.display
     }
     
-    func clearAll () {
+    func clearHistory () {
         self.historyEntries = []
         Task { try? await history.clear() }
     }
