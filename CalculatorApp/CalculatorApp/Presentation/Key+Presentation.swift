@@ -18,19 +18,7 @@ extension Key {
     }
     
     var buttonLabel: String {
-        switch self {
-        case .digit(let value): "\(value.rawValue)"
-        case .operation(let operation):
-            switch (operation) {
-            case .add: "+"
-            case .divide: "÷"
-            case .subtract: "−"
-            case .multiply: "×"
-            }
-        case .decimalPoint: "."
-        case .equals: "="
-        case .allClear: "AC"
-        }
+        keyLabel(self)
     }
     
     var columnsCount: Int {

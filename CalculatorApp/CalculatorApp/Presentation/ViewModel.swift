@@ -25,6 +25,11 @@ import Observation
             return calculatorEngine.display
     }
     
+    func clearAll () {
+        self.historyEntries = []
+        Task { try? await history.clear() }
+    }
+    
     
     func press (_ key: Key) {
         let beforePress: String = calculatorEngine.display

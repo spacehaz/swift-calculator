@@ -2,7 +2,8 @@ import SwiftUI
 import CalculatorCore
 
 struct ContentView: View {
-    private let viewModel: CalculatorViewModel
+    private var viewModel: CalculatorViewModel
+    @State private var isHistoryPresented = false
     
     init (viewModel: CalculatorViewModel) {
         self.viewModel = viewModel
@@ -37,6 +38,15 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            HStack {
+                Button {
+                    isHistoryPresented = true
+                } label: {
+                    Image(systemName: "clock.arrow.circlepath")
+                }
+                Spacer()
+            }
+            .padding(.horizontal)
             Spacer()
 
             CalculatorDisplay(text: viewModel.displayText)
@@ -60,7 +70,11 @@ struct ContentView: View {
             }
             .padding()
             .fixedSize(horizontal: false, vertical: true) 
-            
+            .sheet(isPresented: $isHistoryPresented) {
+                HistoryPage(entries: viewModel.historyEntries, onClear: {
+                    viewModel.clearAll()
+                })
+            }
             
         }
         .frame(maxHeight: .infinity)

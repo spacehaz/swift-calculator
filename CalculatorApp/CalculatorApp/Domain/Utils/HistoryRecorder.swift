@@ -30,7 +30,7 @@ nonisolated struct HistoryRecorder {
                     break
                 }
 
-                let symbol = key.buttonLabel
+                let symbol = keyLabel(key)
 
                 if lastKeyWasOperation {
                     self.currentEntry.removeLast()
